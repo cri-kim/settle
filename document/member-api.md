@@ -17,16 +17,15 @@
 ### RESPONSE PARAMETER
 |Parameter| Type | Length | Required| Description|
 |:--:|:--:|:--:|:--:|--|
-| code | char | 20 |●|
-|msg| char | 20|○|
-|data| char | 20|○|
 ### RESPONSE SAMPLE
 - 200 SUCCESS
+- 400 BAD REQUEST
+- 500 INTERNAL SERVER ERROR
 ```
 [
   {
-    "code" : "0000",
-    "msg" : "success",
+    "code" : "4000",
+    "msg" : "Bad parameter",
     "data" : ""
   }
 ]
