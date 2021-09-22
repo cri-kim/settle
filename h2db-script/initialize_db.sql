@@ -1,36 +1,29 @@
 BEGIN
-	CREATE TABLE user(
-		user_key int not null auto_increment,
-		user_id varchar(20) not null,
-		passwd varchar(200) not null,
-		role varchar(10),
-		primary key(user_key)
-	)
-	CREATE INDEX user_id_N_passwd_idx ON user(user_id, passwd)
 	
-	CREATE TABLE user_access_log(
+	CREATE TABLE member_access_log(
 		seq int not null auto_increment,
-		user_key int not null,
+		member_key int not null,
 		device varchar(10),
 		connect_ip varchar(15),
 		
 		reg_dtm datetime,
 		primary key(seq)
-	)
-	CREATE INDEX user_key_idx ON user_access_log(user_key)
+	);
+	CREATE INDEX member_key_idx ON member_access_log(member_key);
 	
 	/* member 사용자 정보 */
 	CREATE TABLE member(
 		member_key int not null auto_increment,
 		member_id varchar(20) not null,
+		passwd varchar(200) not null,
+		role varchar(10),
 		member_nm varchar(20) not null,
 		state char(1) not null,
 		reg_dtm datetime,
 		mod_dtm datetime,
 		primary key(member_key)
-	)
-	
-	CREATE INDEX member_id_idx ON member(member_id)
+	);
+	CREATE INDEX member_id_idx ON member(member_id);
 
 	CREATE TABLE auth(
 		auth_key int not null auto_increment,
@@ -39,7 +32,7 @@ BEGIN
 		reg_dtm datetime,
 		mod_dtm datetime,
 		primary key(auth_key)
-	)
+	);
 
 	CREATE TABLE member_auth(
 		member_key int not null,
@@ -47,28 +40,42 @@ BEGIN
 		use_yn char(1) not null,
 		reg_dtm datetime,
 		mod_dtm datetime
-	)
+	);
+	
 	/* owner 사용자 정보 */
 	CREATE TABLE owner(
 		owner_key int not null auto_increment,
-		owner_id varchar(20) not null,
 		owner_nm varchar(20) not null,
 		state char(1) not null,
 		reg_dtm datetime,
 		mod_dtm datetime,
 		primary key(owner_key)
-	)
-	CREATE INDEX owner_id_idx ON owner(owner_id)
+	);
+	CREATE INDEX owner_id_idx ON owner(owner_id);
+	
+	/* store 정보 */
+	CREATE TABLE store(
+		store_key int not null auto_increment,
+		owner_key int not null,
+		store_nm varchar(20) not null,
+		state char(1) not null,
+		reg_dtm datetime,
+		mod_dtm datetime,
+		primary key(store_key)
+	);
+	CREATE INDEX store_key_idx ON store(owner_key);
+	
 	/* 사장님 계좌 등 */
 	CREATE TABLE account(
 		account_key int not null auto_increment,
 		owner_key int not null,
-		info varchar(200),
+		bank varchar(200),
+		account varchar(200),
 		use_yn char(1) not null,
 		reg_dtm datetime,
 		mod_dtm datetime,
 		primary key(account_key)
-	)
+	);
 	/* 주문 정보 */
 	CREATE TABLE order(
 		order_key int not null auto_increment,
@@ -81,12 +88,12 @@ BEGIN
 		order_key int not null,
 		payment_key int not null,
 		facevalue int,
-		account int,
+		amount int,
 		discount_rate int
 	);
 	CREATE TABLE order_snapshot(
 		order_key int not null,
-		account int,
+		amount int,
 		facevalue int,
 		reg_ymd varchar(8),
 		discount_rate int,
@@ -103,7 +110,7 @@ BEGIN
 	CREATE TABLE reward(
 		reward_key int not null auto_increment,
 		order_key int not null,
-		account int
+		amount int
 	);
 	/* 지급 관리 */
 	CREATE TABLE orderPaymentAggregation(

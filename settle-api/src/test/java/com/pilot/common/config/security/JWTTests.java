@@ -5,16 +5,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.pilot.api.user.domain.User;
+import com.pilot.api.member.domain.Member;
 import com.pilot.common.util.TokenUtils;
 
 public class JWTTests {
 	private String token;
 	
+	
 	@BeforeEach
 	public void setup() {
 		String id = "test";
-		User user = new User(null, id, "test", "MEMBER");
+		Member user = Member.builder().memberId(id).role("MEMBER").build();
 		token = TokenUtils.generateJwtToken(user);
 		System.out.println(token);
 	}

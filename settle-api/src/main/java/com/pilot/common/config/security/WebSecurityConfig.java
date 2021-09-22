@@ -1,19 +1,30 @@
 package com.pilot.common.config.security;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.pilot.api.user.service.UserDetailsService;
+import com.pilot.api.member.service.UserDetailsService;
 import com.pilot.common.config.filter.AuthenticationFilter;
+import com.pilot.common.config.filter.JwtFilter;
 import com.pilot.common.config.handler.LoginFailureHandler;
 import com.pilot.common.config.handler.LoginSuccessHandler;
 
@@ -39,11 +50,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		http
 		.httpBasic().disable()
 		.csrf().disable()
-		.authorizeRequests()
-		.antMatchers("/login/**","/error/**").permitAll()
-		.anyRequest().authenticated()
+		.exceptionHandling()
+		.accessDeniedHandler(accessDeniedHandler())
+		.authenticationEntryPoint(authenticationEntryPoint())
+		
 		.and()
-		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		.authorizeRequests()
+			.antMatchers("/api/login/**","/error/**").permitAll()
+			.anyRequest().authenticated()
+		.and()
+		.logout()
+			.invalidateHttpSession(true)
+			.deleteCookies("JSESSIONID")
+			.permitAll()
+		.and()
+		.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+		;
 	}
 	
 	@Override
@@ -54,6 +77,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public JwtFilter jwtFilter() throws Exception{
+		JwtFilter filter= new JwtFilter();
+		return filter;
+	}
+	
+	@Bean
+	public AccessDeniedHandler accessDeniedHandler() {
+		return new AccessDeniedHandler() {
+			@Override
+			public void handle(HttpServletRequest request, HttpServletResponse response,
+					AccessDeniedException accessDeniedException) throws IOException, ServletException {
+				response.sendRedirect("/error/unauthorized");
+			}
+		};
+	}
+	
+	@Bean
+	public AuthenticationEntryPoint authenticationEntryPoint() {
+		return new AuthenticationEntryPoint() {
+			@Override
+			public void commence(HttpServletRequest request, HttpServletResponse response,
+					AuthenticationException authException) throws IOException, ServletException {
+				response.sendRedirect("/error/unauthorized");
+			}
+		};
 	}
 	
 	@Bean

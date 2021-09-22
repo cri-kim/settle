@@ -6,8 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.pilot.api.user.domain.UserDetails;
-import com.pilot.api.user.service.UserDetailsService;
+import com.pilot.api.member.domain.UserDetails;
+import com.pilot.api.member.service.UserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

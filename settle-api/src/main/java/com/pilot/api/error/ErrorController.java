@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pilot.common.dto.ApiResponseSingle;
 import com.pilot.common.enums.ResponseCode;
-import com.pilot.common.util.TokenUtils;
 
 @RestController
 @RequestMapping("/error")
@@ -24,6 +23,7 @@ public class ErrorController {
 	public ResponseEntity<ApiResponseSingle<String>> unauthorized(){
 		ApiResponseSingle<String> body
 		= new ApiResponseSingle<String>(ResponseCode.UNAUTHORIZED);
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+//		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+		return ResponseEntity.status(HttpStatus.OK).body(body);
 	}
 }
