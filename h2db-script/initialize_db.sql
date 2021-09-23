@@ -1,7 +1,7 @@
 BEGIN
 	
 	CREATE TABLE member_access_log(
-		seq int not null auto_increment,
+		seq bigint not null auto_increment,
 		member_key int not null,
 		device varchar(10),
 		connect_ip varchar(15),
@@ -13,7 +13,7 @@ BEGIN
 	
 	/* member 사용자 정보 */
 	CREATE TABLE member(
-		member_key int not null auto_increment,
+		member_key bigint not null auto_increment,
 		member_id varchar(20) not null,
 		passwd varchar(200) not null,
 		role varchar(10),
@@ -26,7 +26,7 @@ BEGIN
 	CREATE INDEX member_id_idx ON member(member_id);
 
 	CREATE TABLE auth(
-		auth_key int not null auto_increment,
+		auth_key bigint not null auto_increment,
 		auth_nm varchar(20) not null,
 		use_yn char(1) not null,
 		reg_dtm datetime,
@@ -44,7 +44,7 @@ BEGIN
 	
 	/* owner 사용자 정보 */
 	CREATE TABLE owner(
-		owner_key int not null auto_increment,
+		owner_key bigint not null auto_increment,
 		owner_nm varchar(20) not null,
 		state char(1) not null,
 		reg_dtm datetime,
@@ -55,7 +55,7 @@ BEGIN
 	
 	/* store 정보 */
 	CREATE TABLE store(
-		store_key int not null auto_increment,
+		store_key bigint not null auto_increment,
 		owner_key int not null,
 		store_nm varchar(20) not null,
 		state char(1) not null,
@@ -67,7 +67,7 @@ BEGIN
 	
 	/* 사장님 계좌 등 */
 	CREATE TABLE account(
-		account_key int not null auto_increment,
+		account_key bigint not null auto_increment,
 		owner_key int not null,
 		bank varchar(200),
 		account varchar(200),
@@ -78,7 +78,7 @@ BEGIN
 	);
 	/* 주문 정보 */
 	CREATE TABLE order(
-		order_key int not null auto_increment,
+		order_key bigint not null auto_increment,
 		owner_key int not null,
 		order_nm varchar(20) not null,
 		reg_dtm datetime,
@@ -101,20 +101,20 @@ BEGIN
 	);
 	
 	CREATE TABLE payment(
-		payment_key int not null auto_increment,
+		payment_key bigint not null auto_increment,
 		payment_nm varchar(20) not null,
 		rate int,
 		primary key(payment_key)
 	);
 	/* 보상 금액 정보 */
 	CREATE TABLE reward(
-		reward_key int not null auto_increment,
+		reward_key bigint not null auto_increment,
 		order_key int not null,
 		amount int
 	);
 	/* 지급 관리 */
 	CREATE TABLE orderPaymentAggregation(
-		id int not null auto_increment,
+		id bigint not null auto_increment,
 		owner_key int not null,
 		tot_account int,
 		reg_ymd varchar(8),
