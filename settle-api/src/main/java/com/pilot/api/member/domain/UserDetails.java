@@ -16,12 +16,18 @@ public class UserDetails implements org.springframework.security.core.userdetail
 	private static final long serialVersionUID = 1L;
 
 	private Member user;
+	
+	private String refreshToken;
 
 	private Collection<? extends GrantedAuthority> authorities;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
+	}
+	
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 
 	@Override

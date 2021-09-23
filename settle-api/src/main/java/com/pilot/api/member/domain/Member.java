@@ -1,5 +1,7 @@
 package com.pilot.api.member.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Member {
 	@Id
 	@Column(name = "member_key")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memberKey;
 	
 	@Column(name = "member_id")
@@ -37,8 +39,8 @@ public class Member {
 	private String state;
 	
 	@Column(name = "reg_dtm")
-	private String regDtm;
+	private LocalDateTime regDtm;
 	
 	@Column(name = "mod_dtm")
-	private String modDtm;
+	private LocalDateTime modDtm;
 }
