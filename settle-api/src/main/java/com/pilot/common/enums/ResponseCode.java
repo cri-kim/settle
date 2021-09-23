@@ -5,7 +5,8 @@ public enum ResponseCode implements EnumMapperType {
 	SUCCESS("0000","Success"),
 	BAD_PARAMETER("4000","Bad parameter"),
 	UNAUTHORIZED("4001","Unauthorized"),
-	NO_CODE("9999","No Code");
+	
+	INTERNAL_SYSTEM_ERROR("9999","System maintenance");
 	
 	private String code;
 	private String title;

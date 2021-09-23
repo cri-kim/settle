@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		.and()
 		.authorizeRequests()
-			.antMatchers("/api/login/**","/error/**").permitAll()
+			.antMatchers("/api/login","/error/**").permitAll()
 			.anyRequest().authenticated()
 		.and()
 		.logout()
@@ -64,7 +64,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.deleteCookies("JSESSIONID")
 			.permitAll()
 		.and()
-		.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
 		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 		;
 	}
@@ -79,11 +78,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
-	public JwtFilter jwtFilter() throws Exception{
-		JwtFilter filter= new JwtFilter();
-		return filter;
-	}
 	
 	@Bean
 	public AccessDeniedHandler accessDeniedHandler() {
@@ -110,7 +104,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Bean
 	public AuthenticationFilter authenticationFilter() throws Exception {
 		AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager());
-		authenticationFilter.setFilterProcessesUrl("/login");
+		authenticationFilter.setFilterProcessesUrl("/api/login");
 		authenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
 		authenticationFilter.setAuthenticationFailureHandler(loginFailureHandler());
 		authenticationFilter.afterPropertiesSet();
