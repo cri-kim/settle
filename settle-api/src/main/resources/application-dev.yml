@@ -1,4 +1,4 @@
-server:  port: 8080  servlet.context-path: /  error:    include-exception: false    include-stacktrace: never    path: /error    whitelabel:      enabled: false###########################################
+project.name: settle-apiproject.version: 1.0.0server:  port: 8080  servlet.context-path: /  error:    include-exception: false    include-stacktrace: never    path: /error    whitelabel:      enabled: false  servlet:    session:      timeout: 30###########################################
 # DB###########################################
 spring:
   h2:
@@ -10,4 +10,4 @@ spring:
     password:###########################################
 # JPA###########################################
 spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-#spring.jpa.hibernate.naming.physical-strategy: com.pilot.common.config.ImprovedNamingStrategyspring.jpa.hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImplspring.jpa.show-sql: true############################################ Logging###########################################logging.level.root: infologging.level.org.hibernate.type.descriptor.sql: trace############################################ Security###########################################jwt.security.key: Th!s_!s_Pil0t_Pr0jectjwt.expire.minutes: 30jwt.refresh.expire.minutes: 30
+#spring.jpa.hibernate.naming.physical-strategy: com.pilot.common.config.ImprovedNamingStrategy#spring.jpa.hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImplspring.jpa.show-sql: true############################################ Logging###########################################logging.level.root: infologging.level.org.hibernate.type.descriptor.sql: tracelogging.file.path: D:\logs\settle\api############################################ Security###########################################jwt.security.key: Th!s_!s_Pil0t_Pr0jectjwt.expire.minutes: 10jwt.refresh.expire.minutes: 30

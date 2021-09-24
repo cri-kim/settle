@@ -9,10 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pilot.api.member.domain.UserDetails;
+import com.pilot.api.member.entity.UserDetails;
 import com.pilot.api.member.dto.RefreshDTO;
 import com.pilot.common.dto.ApiResponseSingle;
 import com.pilot.common.enums.ResponseCode;
@@ -25,13 +24,9 @@ public class LoginController {
 	@RequestMapping(value="/api/login/refresh")
 	public ResponseEntity<ApiResponseSingle<String>> refresh(@RequestBody RefreshDTO dto, HttpServletRequest request){
 		UserDetails userDetails = ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		
 		//FIXME refresh token 체크/갱신 필요
 		String refreshToken = StringUtils.defaultString(userDetails.getRefreshToken());
 		ApiResponseSingle<String> body = new ApiResponseSingle<String>(ResponseCode.SUCCESS);
-		
-		System.err.println(dto.getRefreshToken());
-		System.err.println(refreshToken);
 		
 		//Check refreshToken
 		if(!TokenUtils.isValidToken(dto.getRefreshToken()) || !dto.getRefreshToken().equals(refreshToken)) {

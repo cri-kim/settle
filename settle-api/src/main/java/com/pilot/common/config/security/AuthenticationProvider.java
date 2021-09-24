@@ -7,8 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.pilot.api.member.domain.Member;
-import com.pilot.api.member.domain.UserDetails;
+import com.pilot.api.member.entity.Member;
+import com.pilot.api.member.entity.UserDetails;
 import com.pilot.api.member.service.UserDetailsService;
 import com.pilot.common.util.TokenUtils;
 
@@ -34,7 +34,7 @@ public class AuthenticationProvider implements org.springframework.security.auth
 			log.error(userId +" invalid password");
 			throw new BadCredentialsException(userId +" invalid password");
 		}
-		//FIXME
+		//FIXME refresh token 생성 루틴 변경 필요
 		String refreshToken = TokenUtils.generateJwtToken(Member.builder().memberId(userId).role("MEMBER").build(), REFRESH_TOKEN_EXPIRED_MINUTES);
 		userDetails.setRefreshToken(refreshToken);
 		return new UsernamePasswordAuthenticationToken(userDetails, passwd, userDetails.getAuthorities());

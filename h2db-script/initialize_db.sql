@@ -35,11 +35,15 @@ BEGIN
 	);
 
 	CREATE TABLE member_auth(
+		seq bigint not null auto_increment,
 		member_key int not null,
 		auth_key int not null,
 		use_yn char(1) not null,
 		reg_dtm datetime,
-		mod_dtm datetime
+		mod_dtm datetime,
+		primary key(seq),
+		foreign key(member_key)
+		references member(member_key)
 	);
 	
 	/* owner 사용자 정보 */

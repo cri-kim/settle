@@ -1,9 +1,12 @@
 package com.pilot.api.member.dto;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class SignUpDTO {
-	private String userId;
+	private String memberId;
+	private String memberNm;
 	private String passwd;
+	private String role;
+	private String state;
 }

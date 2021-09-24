@@ -15,24 +15,31 @@ import com.pilot.common.constant.AuthConstants;
 import com.pilot.common.util.TokenUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter{
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		String path = request.getServletPath();
+		return path.equals("/api/login");
+	}
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException, RuntimeException {
 		String jwt = resolveToken(request);
 		
-		if(SecurityContextHolder.getContext().getAuthentication() == null || SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-			System.err.println("?");
+		if(SecurityContextHolder.getContext().getAuthentication() == null || !SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
 			SecurityContextHolder.clearContext();
 		}
 		//Check token
 		if(StringUtils.isBlank(jwt) || !TokenUtils.isValidToken(jwt)) {
-			System.err.println("2?");
 			SecurityContextHolder.clearContext();
 		}
+		
 		filterChain.doFilter(request, response);
 	}
 	
@@ -43,5 +50,4 @@ public class JwtFilter extends OncePerRequestFilter{
 		}
 		return null;
 	}
-
 }

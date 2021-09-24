@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import com.pilot.common.constant.AuthConstants;
 import com.pilot.common.dto.ApiResponseSingle;
 import com.pilot.common.enums.ResponseCode;
-import com.pilot.api.member.domain.UserDetails;
+import com.pilot.api.member.entity.UserDetails;
 import com.pilot.common.util.TokenUtils;
 
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler{
