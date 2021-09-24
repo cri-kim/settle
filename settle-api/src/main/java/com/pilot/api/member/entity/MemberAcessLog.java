@@ -1,4 +1,4 @@
-package com.pilot.api.member.domain;
+package com.pilot.api.member.entity;
 
 import java.io.Serializable;
 

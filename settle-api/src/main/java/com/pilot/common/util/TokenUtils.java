@@ -10,7 +10,7 @@ import java.util.Map;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
-import com.pilot.api.member.domain.Member;
+import com.pilot.api.member.entity.Member;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

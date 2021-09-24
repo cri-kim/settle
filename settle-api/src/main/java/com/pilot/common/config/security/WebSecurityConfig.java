@@ -24,7 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.pilot.api.member.service.UserDetailsService;
 import com.pilot.common.config.filter.AuthenticationFilter;
-import com.pilot.common.config.filter.JwtFilter;
 import com.pilot.common.config.handler.LoginFailureHandler;
 import com.pilot.common.config.handler.LoginSuccessHandler;
 
@@ -53,7 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.exceptionHandling()
 		.accessDeniedHandler(accessDeniedHandler())
 		.authenticationEntryPoint(authenticationEntryPoint())
-		
 		.and()
 		.authorizeRequests()
 			.antMatchers("/api/login","/error/**").permitAll()
@@ -62,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.logout()
 			.invalidateHttpSession(true)
 			.deleteCookies("JSESSIONID")
+			.deleteCookies("refreshToken")
 			.permitAll()
 		.and()
 		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
