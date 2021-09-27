@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pilot.api.member.entity.UserDetails;
 import com.pilot.api.member.dto.RefreshDTO;
+import com.pilot.common.constant.AuthConstants;
 import com.pilot.common.dto.ApiResponseSingle;
 import com.pilot.common.enums.ResponseCode;
 import com.pilot.common.util.TokenUtils;
@@ -33,9 +34,9 @@ public class LoginController {
 			return new ResponseEntity<ApiResponseSingle<String>>(new ApiResponseSingle<String>(ResponseCode.BAD_PARAMETER), HttpStatus.BAD_REQUEST);
 		}
 		
-		//refresh accessToken 
+		//AccessToken 
 		HttpHeaders header = new HttpHeaders();
-		header.add("token", TokenUtils.generateJwtToken(userDetails.getUser()));
+		header.add(AuthConstants.AUTH_HEADER, AuthConstants.TOKEN_PREFIX + " "+TokenUtils.generateJwtToken(userDetails.getUser()));
 		return new ResponseEntity<ApiResponseSingle<String>>(body, header, HttpStatus.OK);
 	}
 }

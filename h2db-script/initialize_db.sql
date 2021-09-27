@@ -49,59 +49,69 @@ BEGIN
 	/* owner 사용자 정보 */
 	CREATE TABLE owner(
 		owner_key bigint not null auto_increment,
-		owner_nm varchar(20) not null,
 		state char(1) not null,
 		reg_dtm datetime,
 		mod_dtm datetime,
 		primary key(owner_key)
 	);
-	CREATE INDEX owner_id_idx ON owner(owner_id);
 	
 	/* store 정보 */
 	CREATE TABLE store(
 		store_key bigint not null auto_increment,
-		owner_key int not null,
+		owner_key bigint not null,
 		store_nm varchar(20) not null,
 		state char(1) not null,
 		reg_dtm datetime,
 		mod_dtm datetime,
-		primary key(store_key)
+		fee_rate int, 
+		primary key(store_key),
+		foreign key(owner_key)
+		references owner(owner_key)
 	);
 	CREATE INDEX store_key_idx ON store(owner_key);
 	
 	/* 사장님 계좌 등 */
 	CREATE TABLE account(
 		account_key bigint not null auto_increment,
-		owner_key int not null,
+		owner_key bigint not null,
 		bank varchar(200),
 		account varchar(200),
 		use_yn char(1) not null,
 		reg_dtm datetime,
 		mod_dtm datetime,
-		primary key(account_key)
+		primary key(account_key),
+		foreign key(owner_key)
+		references owner(owner_key)
 	);
 	/* 주문 정보 */
-	CREATE TABLE order(
-		order_key bigint not null auto_increment,
-		owner_key int not null,
-		order_nm varchar(20) not null,
+	CREATE TABLE `order`(
+		order_nm varchar(20) not null auto_increment,
+		store_key bigint not null,
 		reg_dtm datetime,
-		primary key(order_key)
+		primary key(order_key),
+		foreign key(store_key)
+		references store(store_key)
 	);
 	CREATE TABLE order_detail(
-		order_key int not null,
+		seq bigint not null auto_increment,
+		order_key bigint not null,
 		payment_key int not null,
-		facevalue int,
 		amount int,
-		discount_rate int
+		foreign key(order_key)
+		references `order`(order_key)
 	);
+	
 	CREATE TABLE order_snapshot(
-		order_key int not null,
+		seq bigint not null auto_increment,
+		owner_key bigint not null,
 		amount int,
-		facevalue int,
+		order_cnt int,
+		reward_amount int,
+		reward_cnt int,
 		reg_ymd varchar(8),
-		discount_rate int,
-		cnt int
+		primary key(seq),
+		foreign key(owner_key)
+		references owner(owner_key)
 	);
 	
 	CREATE TABLE payment(
@@ -114,14 +124,25 @@ BEGIN
 	CREATE TABLE reward(
 		reward_key bigint not null auto_increment,
 		order_key int not null,
-		amount int
+		reward_rate int,
+		reg_dtm datetime,
+		levy_dtm datetime,
+		reason varchar(200),
+		primary key(reward_key),
+		foreign key(order_key)
+		references `order`(order_key)
 	);
 	/* 지급 관리 */
 	CREATE TABLE orderPaymentAggregation(
-		id bigint not null auto_increment,
-		owner_key int not null,
-		tot_account int,
+		order_key bigint not null,
+		owner_key bigint not null,
+		pay_rate int,
+		store_rate int,
+		facevalue int,
+		amount int,
 		reg_ymd varchar(8),
-		primary key(id)
+		primary key(order_key),
+		foreign key(owner_key)
+		references owner(owner_key)
 	);
 END

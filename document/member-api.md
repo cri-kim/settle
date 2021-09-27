@@ -173,12 +173,12 @@
 ## 사용자 권한 전체 조회
 > 사용자 권한 전체를 조회하는 API 이다.
 
-```POST``` /api/user/auth/list
+```POST``` /api/auth/list
 ### REQUEST PARAMETER
 |Parameter| Type | Length | Required| Description|
 |:--:|:--:|:--:|:--:|--|
 |memberId | char | 20 |○|
-|authId| int | 8|○|
+|authKey| int | 8|○|
 
 ### RESPONSE PARAMETER
 |Parameter| Type | Length | Required| Description|
@@ -209,16 +209,48 @@
   }
 ]
 ```
-## 권한 등록/삭제
+## 권한 등록
 > 사용자 권한을 등록/삭제하는 API 이다.
 
-```POST``` /api/user/auth/mod
+```POST``` /api/auth/add
 ### REQUEST PARAMETER
 |Parameter| Type | Length | Required| Description|
 |:--:|:--:|:--:|:--:|--|
 |memberId | char | 20 |○|
-|authId| int | 8|○|
-|useYn| char | 1|○| Y(등록), N(삭제)
+|authKey| int | 8|○|
+|useYn| char | 1|●| Y(등록), N(삭제)
+
+### RESPONSE PARAMETER
+|Parameter| Type | Length | Required| Description|
+|:--:|:--:|:--:|:--:|--|
+| code | char | 20 |●|
+|msg| char | 20|○|
+|data| object | |○|
+### RESPONSE SAMPLE
+- 200 SUCCESS
+```
+[
+  {
+    "code" : "0000",
+    "msg" : "success",
+    "data" : {
+      "memberId":"test",
+      "authId":"1",
+      "useYn":"Y"
+    }
+  }
+]
+```
+## 권한 수정
+> 사용자 권한을 수정하는 API 이다.
+
+```POST``` /api/auth/mod
+### REQUEST PARAMETER
+|Parameter| Type | Length | Required| Description|
+|:--:|:--:|:--:|:--:|--|
+|memberId | char | 20 |○|
+|authKey| int | 8|○|
+|useYn| char | 1|●| Y(등록), N(삭제)
 
 ### RESPONSE PARAMETER
 |Parameter| Type | Length | Required| Description|

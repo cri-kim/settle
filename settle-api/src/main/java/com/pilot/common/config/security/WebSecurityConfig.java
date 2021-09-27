@@ -54,14 +54,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.authenticationEntryPoint(authenticationEntryPoint())
 		.and()
 		.authorizeRequests()
-			.antMatchers("/api/login","/error/**").permitAll()
+			.antMatchers("/api/login","/api/error/**","/login","/error").permitAll()
 			.anyRequest().authenticated()
 		.and()
 		.logout()
 			.invalidateHttpSession(true)
+			.logoutUrl("/logout")
+			.logoutSuccessUrl("/login")
 			.deleteCookies("JSESSIONID")
 			.deleteCookies("refreshToken")
-			.permitAll()
 		.and()
 		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 		;
@@ -84,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			@Override
 			public void handle(HttpServletRequest request, HttpServletResponse response,
 					AccessDeniedException accessDeniedException) throws IOException, ServletException {
-				response.sendRedirect("/error/unauthorized");
+				response.sendRedirect("/api/error/unauthorized");
 			}
 		};
 	}
@@ -95,7 +96,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			@Override
 			public void commence(HttpServletRequest request, HttpServletResponse response,
 					AuthenticationException authException) throws IOException, ServletException {
-				response.sendRedirect("/error/unauthorized");
+				response.sendRedirect("/api/error/unauthorized");
 			}
 		};
 	}
