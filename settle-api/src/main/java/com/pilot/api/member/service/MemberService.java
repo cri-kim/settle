@@ -3,9 +3,12 @@ package com.pilot.api.member.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.pilot.api.member.dto.MemberDto;
+import com.pilot.api.member.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 import com.pilot.api.member.dto.UserAuthDTO;
@@ -35,16 +38,46 @@ public class MemberService {
 		return memberRepository.save(member);
 	}
 	
-	public List<Member> findByRole(String role){
-		return memberRepository.findByRole(role);
+	public List<MemberDto> findByRole(String role){
+		List<Member> list = memberRepository.findByRole(role);
+		if(list.size() > 0){
+			return list.stream().map(item -> MemberDto.builder()
+					.memberId(item.getMemberId())
+					.memberNm(item.getMemberNm())
+					.state(item.getState())
+					.role(item.getRole())
+					.build())
+					.collect(Collectors.toCollection(ArrayList::new));
+		}
+		return null;
 	}
 	
-	public List<Member> findByState(String state){
-		return memberRepository.findByState(state);
+	public List<MemberDto> findByState(String state){
+		List<Member> list = memberRepository.findByState(state);
+		if(list.size() > 0){
+			return list.stream().map(item -> MemberDto.builder()
+					.memberId(item.getMemberId())
+					.memberNm(item.getMemberNm())
+					.state(item.getState())
+					.role(item.getRole())
+					.build())
+					.collect(Collectors.toCollection(ArrayList::new));
+		}
+		return null;
 	}
 	
-	public List<Member> findAll(){
-		return memberRepository.findAll();
+	public List<MemberDto> findAll(){
+		List<Member> list = memberRepository.findAll();
+		if(list.size() > 0){
+			return list.stream().map(item -> MemberDto.builder()
+									.memberId(item.getMemberId())
+									.memberNm(item.getMemberNm())
+									.state(item.getState())
+									.role(item.getRole())
+									.build())
+					.collect(Collectors.toCollection(ArrayList::new));
+		}
+		return null;
 	}
 	
 	public void update(Member dto) {

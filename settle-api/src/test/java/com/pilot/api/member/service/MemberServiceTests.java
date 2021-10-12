@@ -2,9 +2,12 @@ package com.pilot.api.member.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.pilot.api.member.dto.MemberDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -23,14 +26,22 @@ public class MemberServiceTests {
 	private void setUp() {
 		memberService = new MemberService(memberRepository,authRepository);
 	}
-	
+
+
 	@Test
-	public void save() {
-		Member dto = new Member(null, "test3", "Test3", "MEMBER", "test3", "Y");
-
-		when(memberRepository.save(dto)).thenReturn(dto);
-		Member newOne = memberService.save(dto);
-
-		assertEquals(newOne.getMemberNm(), "test3");
+	void findAll(){
+		List<Member> entityList = new ArrayList<>();
+		Member member = Member.builder()
+				.memberId("1").memberNm("test")
+				.state("")
+				.role("")
+				.build();
+		MemberDto dto = MemberDto.builder().memberId("1").memberNm("test")
+				.state("")
+				.role("")
+				.build();
+		entityList.add(member);
+		when(memberRepository.findAll()).thenReturn(entityList);
+		assertThat(memberService.findAll()).contains(dto);
 	}
 }
